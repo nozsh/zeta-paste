@@ -1,0 +1,21 @@
+{
+  "name": "Zeta Paste",
+  "short_name": "Zeta Paste",
+  "start_url": "/paste/",
+  "scope": "/paste/",
+  "display": "standalone",
+  "theme_color": "#191e24",
+  "background_color": "#1c232b",
+  "icons": [
+    {
+      "src": "/paste/assets/logo-dark-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/paste/assets/logo-dark-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

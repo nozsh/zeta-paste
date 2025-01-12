@@ -1,0 +1,1 @@
+const o=document.getElementById("go_to_top");if(o){let e=()=>{window.scrollY>900?o.style.display="block":o.style.display="none"};o.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})}),e(),window.addEventListener("scroll",e)}
