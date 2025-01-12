@@ -1,0 +1,17 @@
+mixin modal(a = {})
+  - const attr = {};
+
+  if a.checked !== undefined
+    - attr.checked = ''
+
+  input(type="checkbox" id=a.id class="modal-toggle")&attributes(attr)
+  .modal(class=a.modal_class role="dialog" aria-label=a.id)
+    .modal-box(class=a.modalBox_class)
+      block
+    label.modal-backdrop(for=a.id) Close
+
+
+//- How to use -
+  +modal({ id: "<modal_id>", modal_class: "<.modal classes>", modalBox_class: "<.modal-box classes>" })
+  +modal({ id: "<modal_id>", modal_class: "<.modal classes>", modalBox_class: "<.modal-box classes>", checked: true })
+    <content>

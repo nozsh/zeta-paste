@@ -1,0 +1,347 @@
+extends ../../main.pug
+
+block meta
+  +meta({
+    robots: "index, follow",
+    title: "About – Zeta Paste",
+    desc: "Open-source web-app for text encryption with end-to-end (E2E) encryption.",
+    keywords: "text encryption,end-to-end encryption,E2E encryption,offline encryption,data security,message encryption",
+    canonical: "https://zeta.su/paste/about/",
+    hreflang: "https://zeta.su/paste/about/",
+    hreflang_ru: "https://zeta.su/paste/about/ru/",
+    image: "https://zeta.su/paste/assets/webpage-preview.jpg",
+    image_alt: "Logo and name of Zeta Paste.",
+  })
+
+block content
+  div.flex.justify-center.mb-5
+    .container.flex.flex-col.m-4.p-4.max-w-3xl(class="justify-center")
+      div.mb-4.flex.justify-end
+        a.inline-flex.justify-center.items-center.gap-2.bg-base-300.py-2.px-2.rounded-md.cursor-pointer.font-medium.select-none(id="lang-ru")
+          +fontisto-language("h-5 w-5")
+          | Русский
+
+      .prose.max-w-full
+        h1 Everything you need to know
+        h2 Table of Content
+        ul
+          li
+            a.link(href="#about-app") About Zeta Paste app
+          li
+            a.link(href="#about-buttons") Buttons
+          li
+            a.link(href="#how-to-use") How to use
+            ul
+              li
+                a.link(href="#encryption") Encryption
+              li
+                a.link(href="#decryption") Decryption
+          li
+            a.link(href="#about-iterations") Iterations
+          li
+            a.link(href="#how-it-works") How it works
+          li
+            a.link(href="#example") Example
+          li
+            a.link(href="#about-resources") Resources
+            ul
+              li
+                a.link(href="#icons") Icon sets used
+
+
+        h2#about-app About Zeta Paste app
+
+        p This open source web-app is designed to encrypt text (or "secret message"). It encrypts text using end-to-end (E2E) encryption so that only you or someone you trust who knows the password can read it.
+
+        p Encryption and decryption works on your device. The app runs fully on the client side and can be used offline. Your data is not transferred anywhere or stored anywhere.
+
+        p After encryption you get three self-contained parts:
+        
+        ul
+          li SALT
+          li IV (Initialization Vector)
+          li DATA
+          
+        p These parts are necessary for decryption and are not stored in the app or on servers. For successful decryption, you will need this parts, password and iterations count that was used for encryption.
+
+
+        h2#about-buttons Buttons
+        .overflow-x-auto
+          table.table
+            thead
+              tr.bg-base-200
+                th Looks
+                th Description
+            tbody
+              tr
+                td
+                  +about-element-with-icon
+                    +solar-text-bold("h-4 w-4")
+                    | &nbsp;Edit
+                td Edit mode
+              tr
+                td
+                  +about-element-with-icon
+                    +ri-markdown-fill("h-4 w-4")
+                    | &nbsp;Markdown
+                td Preview in markdown mode
+              tr
+                td
+                  +about-element-with-icon
+                    +material-symbols-password-rounded("h-4 w-4")
+                td Set Password &amp; Iterations
+              tr
+                td
+                  +about-element-with-icon
+                    +hugeicons-encrypt("h-4 w-4")
+                td Encrypt. Press to encrypt
+              tr
+                td
+                  +about-element-with-icon
+                    +mdi-encryption-reset("h-4 w-4")
+                td Decrypt. Press to decrypt
+              tr
+                td
+                  +about-element-with-icon
+                    +fluent-scan-text-28-filled("h-4 w-4")
+                td Manual enter: SALT, IV, DATA
+              tr
+                td
+                  +about-element-with-icon
+                    +ic-round-qrcode("h-4 w-4")
+                td Get QR-Code
+              tr(class="hidden md:table-row")
+                td
+                  +about-element-with-icon
+                    +radix-icons-width("h-4 w-4")
+                td Change textarea/preview wide
+                  
+                  
+        h2#how-to-use How to use
+        h3#encryption Encryption
+        ol
+          li Press&nbsp;
+            +about-element-with-icon
+              +solar-text-bold("h-4 w-4")
+              | &nbsp;Edit
+          
+          li Write some message
+          
+          li Press&nbsp;
+            +about-element-with-icon
+              +material-symbols-password-rounded("h-4 w-4")
+            | &nbsp;, come up with a password, and set the iterations count
+
+          li Share stuff, part by part or just share the link
+
+        h3#decryption Decryption
+        p Bundle link parts, or just follow whole link (or QR-Code) and make sure that in the address bar you have a link like:&nbsp;
+          span.text-nowrap
+            code # + &lt;SALT&gt; : &lt;IV&gt; : &lt;DATA&gt;
+          | &nbsp;.
+
+        p Or use&nbsp;
+          +about-element-with-icon
+            +fluent-scan-text-28-filled("h-4 w-4")
+          | &nbsp;, to enter stuff manually.
+
+        ol
+          li Press&nbsp;
+            +about-element-with-icon
+              +material-symbols-password-rounded("h-4 w-4")
+            | &nbsp;, enter the password and iterations count used for encryption
+          
+          li Press&nbsp;
+            +about-element-with-icon
+              +mdi-encryption-reset("h-4 w-4")
+            | &nbsp;, to decrypt the message
+
+
+        h2#about-iterations Iterations
+        p The more iterations, the more load, the more time it takes to&nbsp;
+          span.text-wrap encrypt/decrypt,
+          | &nbsp;the stronger the encryption.
+
+        p The iterations count is scaled as follows:
+
+        ul
+          li 100000 = 1
+          li 150000 = 1.5/1,5
+          li 300000 = 3
+          li 340000 = 3.4/3,4
+          li 600000 = 6
+          li 1000000 = 10
+
+        p The iterations count cannot be lower than 1.
+
+
+        h2#how-it-works How it works
+        p The text is compressed and converted into WordArray (32-bit word array):
+
+        pre
+          code.
+            const compressedMessage = LZString.compressToUint8Array(message);
+            const messageWordArray = CryptoJS.lib.WordArray.create(compressedMessage);
+        
+        p Creating key using the&nbsp;
+          a.link(href="https://en.wikipedia.org/wiki/PBKDF2") PBKDF2
+          | &nbsp;algorithm based on a random generated salt, the entered password and the iterations count:
+
+        pre
+          code.
+            const generateKey = (password: string, salt: string, iterations: number): CryptoJS.lib.WordArray =&gt; {
+              return CryptoJS.PBKDF2(password, salt, {
+                keySize: 256 / 32,
+                iterations: iterations,
+              });
+            };
+
+        pre
+          code.
+            const salt = CryptoJS.lib.WordArray.random(128 / 8).toString();
+            const key = generateKey(password, salt, iterations);
+
+        p Using the created key using the&nbsp;
+          a.link(href="https://en.wikipedia.org/wiki/PBKDF2") PBKDF2
+          | &nbsp;algorithm and a random generated IV (Initialization Vector), the text is encrypted using the&nbsp;
+          a.link(href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard") AES
+          | -256 encryption algorithm in&nbsp;
+          a.link(href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation") CBC
+          | &nbsp;(Cipher Block Chaining) mode with&nbsp;
+          a.link(href="https://en.wikipedia.org/wiki/PKCS_7") PKCS7
+          | &nbsp;padding:&nbsp;
+
+        pre
+          code.
+            const iv = CryptoJS.lib.WordArray.random(128 / 8);
+            const encrypted = CryptoJS.AES.encrypt(messageWordArray, key, {
+              iv: iv,
+              mode: CryptoJS.mode.CBC,
+              padding: CryptoJS.pad.Pkcs7,
+            });
+
+        p An initialization vector (IV) is required to ensure that the encryption is unique even when the same key is used.
+
+        p The output is a concatenated string in the format&nbsp;
+          code.text-nowrap # + &lt;SALT&gt; : &lt;IV&gt; : &lt;DATA&gt;
+          | :
+
+        pre
+          code return salt + ":" + iv.toString() + ":" + encrypted.toString();
+
+        p Decryption occurs the same way, but in reverse.
+
+        p This stuff (
+          span.font-semibold SALT
+          | &nbsp;&amp;&nbsp;
+          span.font-semibold IV
+          | ) needed to decrypt&nbsp;
+          span.font-semibold DATA
+          | .
+
+
+        h2#example Example
+
+        ul
+          li Iterations:&nbsp;
+            code 6
+          li Password:&nbsp;
+            code qwerty
+
+        hr
+
+        p
+          a.link(href="https://zeta.su/paste/#05f2cc85783d31c30d27fbdd3482eefe:5879f308fdda0f58bc2a2dc25e8f5a14:TyoQu72aMK1oXboMPA64IhjDXWkFo/tnywQZY6OWGQ99fcSSR3VrHnOrC35UNIvyajLkumEnDYuCYdn79vq0Wtf9J/tHhUZYDqf6+AFhLjGlWYv3P0Pyv6tC6reVuDBQ9gjz+1JWMi+GeRz6JFmoB65eA+f8+EO3MCQ2ko8KH5pvvDvgwZBbje8zHxXiFNchlB0dIdljxdY12yoCia1b6xX+KV/ihoEmXtRmhHptiBpyJDfbwzABxv0dxT4+OI+N0JCQmDSQF1iMpsmHUHzYCSVlVP4JRp8PzaHRkI+iJWIsXOD+FOoCJmCHOqwBBZ/jYLq277S0g8hr/TsBrVxcbpdnA4b6RluF+RdgUSfMYOhWeH5twwkceg6FfSNF2F+1b7GyzGDq5lxgMXewiaoOpGhaLgkNllKAQbG8rS31j7nknhM2dyURu3QCmTvwGnaTPMgVEHFO0pqoKxOKojwo4dR4Q4jsK6sxcHa50U/bPNi3LGd0H/hY4SKt1wLsTUiYuM2g/zRdAtg4GekJo0EhF3zWmITDNUjiqHYK+wiX5fRCIrlnnEvbMZjRziUDRX26nrQPs6fYMVAF5YgQVGzLlIs0uKO3EC0WyPqtNAVxuFBfLdygKeXnoCr2U7CwOMf0B7OY4I6NSpC5++YITcsZzQ==") Link
+
+        hr
+
+        p SALT, IV, DATA
+
+        pre
+          code.
+            SALT: 05f2cc85783d31c30d27fbdd3482eefe
+            IV: 5879f308fdda0f58bc2a2dc25e8f5a14
+            DATA: TyoQu72aMK1oXboMPA64IhjDXWkFo/tnywQZY6OWGQ99fcSSR3VrHnOrC35UNIvyajLkumEnDYuCYdn79vq0Wtf9J/tHhUZYDqf6+AFhLjGlWYv3P0Pyv6tC6reVuDBQ9gjz+1JWMi+GeRz6JFmoB65eA+f8+EO3MCQ2ko8KH5pvvDvgwZBbje8zHxXiFNchlB0dIdljxdY12yoCia1b6xX+KV/ihoEmXtRmhHptiBpyJDfbwzABxv0dxT4+OI+N0JCQmDSQF1iMpsmHUHzYCSVlVP4JRp8PzaHRkI+iJWIsXOD+FOoCJmCHOqwBBZ/jYLq277S0g8hr/TsBrVxcbpdnA4b6RluF+RdgUSfMYOhWeH5twwkceg6FfSNF2F+1b7GyzGDq5lxgMXewiaoOpGhaLgkNllKAQbG8rS31j7nknhM2dyURu3QCmTvwGnaTPMgVEHFO0pqoKxOKojwo4dR4Q4jsK6sxcHa50U/bPNi3LGd0H/hY4SKt1wLsTUiYuM2g/zRdAtg4GekJo0EhF3zWmITDNUjiqHYK+wiX5fRCIrlnnEvbMZjRziUDRX26nrQPs6fYMVAF5YgQVGzLlIs0uKO3EC0WyPqtNAVxuFBfLdygKeXnoCr2U7CwOMf0B7OY4I6NSpC5++YITcsZzQ==
+        
+        hr
+
+        p SALT:
+        pre
+          code 05f2cc85783d31c30d27fbdd3482eefe
+
+        p IV:
+        pre
+          code 5879f308fdda0f58bc2a2dc25e8f5a14
+
+        p Encrypted Data (DATA):
+        pre
+          code TyoQu72aMK1oXboMPA64IhjDXWkFo/tnywQZY6OWGQ99fcSSR3VrHnOrC35UNIvyajLkumEnDYuCYdn79vq0Wtf9J/tHhUZYDqf6+AFhLjGlWYv3P0Pyv6tC6reVuDBQ9gjz+1JWMi+GeRz6JFmoB65eA+f8+EO3MCQ2ko8KH5pvvDvgwZBbje8zHxXiFNchlB0dIdljxdY12yoCia1b6xX+KV/ihoEmXtRmhHptiBpyJDfbwzABxv0dxT4+OI+N0JCQmDSQF1iMpsmHUHzYCSVlVP4JRp8PzaHRkI+iJWIsXOD+FOoCJmCHOqwBBZ/jYLq277S0g8hr/TsBrVxcbpdnA4b6RluF+RdgUSfMYOhWeH5twwkceg6FfSNF2F+1b7GyzGDq5lxgMXewiaoOpGhaLgkNllKAQbG8rS31j7nknhM2dyURu3QCmTvwGnaTPMgVEHFO0pqoKxOKojwo4dR4Q4jsK6sxcHa50U/bPNi3LGd0H/hY4SKt1wLsTUiYuM2g/zRdAtg4GekJo0EhF3zWmITDNUjiqHYK+wiX5fRCIrlnnEvbMZjRziUDRX26nrQPs6fYMVAF5YgQVGzLlIs0uKO3EC0WyPqtNAVxuFBfLdygKeXnoCr2U7CwOMf0B7OY4I6NSpC5++YITcsZzQ==
+
+
+        h2#about-resources Resources
+        h3#icons Icon sets used
+
+        ul
+          li
+            a.link(href="https://github.com/carbon-design-system/carbon/tree/main/packages/icons") Carbon
+            | &nbsp;(Apache-2.0)
+          li
+            a.link(href="https://github.com/microsoft/fluentui-system-icons") Fluent
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://github.com/kenangundogan/fontisto") Fontisto
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://icon-sets.iconify.design/hugeicons/") Huge Icons
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://github.com/Templarian/MaterialDesign") Material Design
+            | &nbsp;(mdi) (Apache-2.0)
+          li
+            a.link(href="https://github.com/google/material-design-icons") Material Symbols
+            | &nbsp;(Apache-2.0)
+          li
+            a.link(href="https://github.com/material-icons/material-icons") Material Icons 
+            | &nbsp;(ic) (Apache-2.0)
+          li
+            a.link(href="https://github.com/primer/octicons/") Octicons
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://github.com/phosphor-icons/core") Phosphor
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://github.com/radix-ui/icons") Radix
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://github.com/Remix-Design/RemixIcon") Remix
+            | &nbsp;(Apache-2.0)
+          li
+            a.link(href="https://www.figma.com/community/file/1166831539721848736/solar-icons-set") Solar
+            | &nbsp;(CC BY 4.0)
+          li
+            a.link(href="https://github.com/tabler/tabler-icons") Tabler
+            | &nbsp;(MIT)
+
+        hr
+
+        blockquote.font-bold
+          span App runs on client.
+          br
+          span Nothing stored in database.
+          br
+          span Database does not exist.
+
+  +bottom-bar("bg-transparent backdrop-blur-md")
+    li
+      button.tooltip(type="button" data-tip="Home" onclick="window.location.href='../'" aria-label="Home")
+        +tabler-home-filled("h-5 w-5")
+    li
+      button.tooltip(type="button" data-tip="Go to Top" id="go_to_top" aria-label="Go to Top")
+        +solar-arrow-to-top-right-bold("h-5 w-5")
+
+  script(src="/src/ts/about-page-lang-change.ts" async)
+  script(src="/src/ts/handle-anchor-scroll.ts" defer)
+  script(src="/src/ts/go-to-top.ts" defer)
+  
+  script.
+    document.getElementById("about").href = "#";

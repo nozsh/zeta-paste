@@ -1,0 +1,72 @@
+{
+  "name": "zeta-paste",
+  "version": "1.0.0",
+  "description": "Serverless E2E encrypted paste sharing web app.",
+  "scripts": {
+    "clean": "rm -rf .parcel-cache && rm -rf public && npm cache clean --force",
+    "namer": "node namer-config.js",
+    "fix-manifest": "replace-in-file webmanifest:/paste/assets/site.webmanifest /paste/assets/site.webmanifest public/**/*.html",
+    "workbox": "workbox generateSW workbox-config.js",
+    "parcel:start": "parcel src/pug/pages/**/*.pug --no-cache --no-source-maps --dist-dir public --public-url /paste/",
+    "parcel:build": "parcel build src/pug/pages/**/*.pug --no-cache --no-source-maps --dist-dir public --public-url /paste/",
+    "start": "npm run clean && cross-env NODE_ENV=development npm run namer && npm run parcel:start",
+    "build": "npm run clean && cross-env NODE_ENV=production npm run namer && npm run parcel:build && npm run fix-manifest && npm run workbox"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nozsh/zeta-paste.git"
+  },
+  "author": "Zeta",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/nozsh/zeta-paste/issues"
+  },
+  "homepage": "https://github.com/nozsh/zeta-paste#readme",
+  "devDependencies": {
+    "@parcel/core": "^2.13.3",
+    "@parcel/packager-raw-url": "^2.13.3",
+    "@parcel/transformer-pug": "^2.13.3",
+    "@parcel/transformer-sass": "^2.13.3",
+    "@parcel/transformer-typescript-tsc": "^2.13.3",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/crypto-js": "^4.2.2",
+    "@types/lz-string": "^1.5.0",
+    "@types/qrcode": "^1.5.5",
+    "autoprefixer": "^10.4.20",
+    "buffer": "^6.0.3",
+    "cross-env": "^7.0.3",
+    "cssnano": "^7.0.6",
+    "daisyui": "^4.12.23",
+    "parcel": "^2.13.3",
+    "parcel-namer-rewrite": "^2.10.3-rc.2",
+    "parcel-reporter-static-files-copy": "^1.5.3",
+    "parcel-resolver-ignore": "^2.2.0",
+    "postcss": "^8.4.49",
+    "pug": "^3.0.3",
+    "replace-in-file": "^8.3.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2",
+    "workbox-build": "^7.3.0",
+    "workbox-cli": "^7.3.0"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "lz-string": "^1.5.0",
+    "marked": "^15.0.6",
+    "qrcode": "^1.5.4"
+  },
+  "parcelIgnore": [
+    "assets/.+"
+  ],
+  "staticFiles": {
+    "staticPath": "assets",
+    "staticOutPath": "assets"
+  },
+  "parcel-namer-rewrite": {
+    "rules": {
+      "(.*).css": "dev_$1.{hash}.css",
+      "(.*).js": "dev_$1.{hash}.js"
+    },
+    "silent": true
+  }
+}

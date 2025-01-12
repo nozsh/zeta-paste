@@ -1,0 +1,193 @@
+extends ../main.pug
+
+block meta
+  +meta({
+    robots: "index, follow",
+    title: "Zeta Paste",
+    desc: "Securely share text with end-to-end (E2E) encryption.",
+    keywords: "text encryption,end-to-end encryption,E2E encryption,offline encryption,data security,message encryption",
+    canonical: "https://zeta.su/paste/",
+    image: "https://zeta.su/paste/assets/webpage-preview.jpg",
+    image_alt: "Logo and name of Zeta Paste.",
+  })
+
+block content
+  div.flex.justify-center
+    .container.flex.flex-col.m-4.p-4.ease-in-out.max-w-xl(class="justify-center md:transition-all md:max-w-lg" style="height: calc(80vh - 10px);")
+      button.btn.w-full(id="edit")
+        +solar-text-bold("h-5 w-5")
+        span Edit
+
+      button.btn.w-full(id="markdown" style="display:none;")
+        +ri-markdown-fill("h-5 w-5")
+        span Markdown
+
+      //- Preview
+      textarea.textarea.textarea-bordered.flex.w-full.h-full.mt-2.resize-none.font-jb-mono(id="message" placeholder="Message..." style="display:none;")
+
+      //- Editable textarea
+      div.textarea.textarea-bordered.flex.w-full.mt-2.overflow-y-auto(id="preview" class="items-center max-w-none")
+        .flex.flex-wrap.w-full.max-w-full(class="prose justify-center")
+          span To start writing, press&nbsp;
+          span.inline-flex.whitespace-nowrap.items-center
+            strong «
+            strong
+              +solar-text-bold("h-4 w-4")
+            strong &nbsp;Edit
+            strong »
+
+      //- QR-Code
+      +modal({ id: "qrcode_modal", modal_class: "modal-middle", modalBox_class: "max-w-none w-auto" })
+        img(id="qr_image" src="#" width="220px" height="220px" alt="QR-Code")
+        .prose
+          div(id="qr_fail" class="hidden")
+            pre
+              code(id="qr_fail_err") Unknown error...
+
+      //- Manual enter
+      +modal({ id: "manual_enter_modal", modal_class: "modal-middle" })
+        #manual_enter_inputs
+          label.input.input-bordered.flex.items-center.gap-2.mb-4.mt-4
+            +mdi-hashtag("h-4 w-4 opacity-70")
+            input.grow.font-jb-mono(id="hash_input" type="password" placeholder="Link OR Hash (#salt:iv:data)" required)
+
+          div.flex.justify-center
+            span.font-semibold OR
+
+          label.input.input-bordered.flex.items-center.gap-2.mb-4.mt-4
+            +mdi-salt("h-4 w-4 opacity-70")
+            input.grow.font-jb-mono(id="salt_input" type="password" placeholder="SALT" required)
+
+          label.input.input-bordered.flex.items-center.gap-2.mb-4
+            +ph-vector-three("h-4 w-4 opacity-70")
+            input.grow.font-jb-mono(id="iv_input" type="password" placeholder="IV" required)
+
+          label.input.input-bordered.flex.items-center.gap-2.mb-4
+            +carbon-encryption("h-4 w-4 opacity-70")
+            input.grow.font-jb-mono(id="data_input" type="password" placeholder="DATA" required)
+
+        button.btn.w-full(typo="button" id="manual_enter" class="pointer-events-none opacity-25") ENTER
+
+      //- Password
+      +modal({ id: "password_modal", modal_class: "modal-bottom" })
+        span.ml-1 Iterations, ex. - 1 (=100 000)
+        label.input.input-bordered.flex.items-center.gap-2.mb-4.mt-4
+          +octicon-iterations-16("h-4 w-4 opacity-70")
+          input.grow.font-jb-mono(id="iterations_input" value="1" type="number" placeholder="Iterations, ex. - 1" required)
+
+        label.input.input-bordered.flex.items-center.gap-2.mb-4
+          +password-icon("h-4 w-4 opacity-70")
+          input.grow.font-jb-mono(id="password_input" type="password" placeholder="******" minlength="6" required)
+        span.ml-1 Password, min. 6 characters
+
+      //- Encryption Successful
+      +modal({ id: "enc_suc_modal", modal_class: "modal-middle" })
+        .prose
+          p.text-lg.font-bold 😄 Encryption Successful
+          div
+            p
+              strong Iterations:
+              | &nbsp;
+              code.px-2.py-1.rounded
+                span#enc_suc_iterations_r 1
+              span &nbsp;(
+              code.px-2.py-1.rounded =
+                span#enc_suc_iterations 100000
+              span )
+
+          hr.my-2
+
+          div
+            p
+              code.bg-info.text-base-100.px-2.py-1.rounded(id="enc_suc_salt" class="hidden")
+
+              code.px-2.py-1.rounded-md.flex.justify-center.cursor-pointer.w-full.skeleton(id="enc_suc_salt_sk") Click to View
+
+            button.btn.w-full.copy-btn(typo="button" copy-target="enc_suc_salt") Copy SALT
+
+          hr.my-2
+
+          div
+            p
+              code.bg-accent.text-base-100.px-2.py-1.rounded(id="enc_suc_iv" class="hidden")
+
+              code.px-2.py-1.rounded-md.flex.justify-center.cursor-pointer.w-full.skeleton(id="enc_suc_iv_sk") Click to View
+
+            button.btn.w-full.copy-btn(typo="button" copy-target="enc_suc_iv") Copy IV
+
+          hr.my-2
+
+          div
+            pre(class="hidden")
+              code(id="enc_suc_data")
+
+            pre.rounded-md.flex.justify-center.cursor-pointer.w-full.skeleton
+              code(id="enc_suc_data_sk") Click to View
+
+            button.btn.w-full.copy-btn(typo="button" copy-target="enc_suc_data") Copy DATA
+
+          hr.my-2
+
+          div
+            pre(class="hidden")
+              code(id="enc_suc_aio")
+
+            pre.rounded-md.flex.justify-center.cursor-pointer.w-full.skeleton
+              code(id="enc_suc_aio_sk") Click to View
+
+            button.btn.w-full.copy-btn(typo="button" copy-target="enc_suc_aio") Copy All
+
+          hr.my-2
+          button.btn.w-full.mt-2(typo="button" id="enc_suc_link") Copy LINK
+
+          button.btn.w-full.mt-2(typo="button" id="enc_suc_close" class="md:hidden") ❌ Close
+
+      //- Encryption in progress...
+      +modal({ id: "enc_status_modal", modal_class: "modal-middle", modalBox_class: "max-w-none w-auto" })
+        .space-y-4.prose
+          p.text-lg.font-bold ⏳ Encryption in progress...
+
+      //- Decryption in progress...
+      +modal({ id: "dec_status_modal", modal_class: "modal-middle", modalBox_class: "max-w-none w-auto" })
+        .space-y-4.prose
+          p.text-lg.font-bold ⏳ Decryption in progress...
+
+      //- Encryption Failure
+      +modal({ id: "enc_fail_modal", modal_class: "modal-middle" })
+        .space-y-4.prose
+          p.text-lg.font-bold.text-error 😔 Encryption Failure
+          div
+            pre
+              code(id="enc_fail_err") Unknown error...
+
+      //- Decryption Failure
+      +modal({ id: "dec_fail_modal", modal_class: "modal-middle" })
+        .space-y-4.prose
+          p.text-lg.font-bold.text-error 😔 Decryption Failure
+          div
+            pre
+              code(id="dec_fail_err") Unknown error...
+
+  //- Bottom Bar
+  +bottom-bar
+    li
+      label.tooltip(for="password_modal" id="password" data-tip="Password")
+        +material-symbols-password-rounded("h-5 w-5")
+    li
+      button.tooltip(typo="button" id="encrypt" class="pointer-events-none opacity-25" data-tip="Encrypt" aria-label="Encrypt")
+        +hugeicons-encrypt("h-5 w-5")
+    li
+      button.tooltip(typo="button" id="decrypt" class="pointer-events-none opacity-25" data-tip="Decrypt" aria-label="Decrypt")
+        +mdi-encryption-reset("h-5 w-5")
+    li
+      label.tooltip(id="manual_enter_modal" for="manual_enter_modal" class="" data-tip="Manual enter")
+        +fluent-scan-text-28-filled("h-5 w-5")
+    li
+      label.tooltip(id="qr" for="qrcode_modal" class="pointer-events-none.opacity-25" data-tip="QR")
+        +ic-round-qrcode("h-5 w-5")
+    li(class="hidden md:flex")
+      button.tooltip(typo="button" id="wide_control" data-tip="Wide" aria-label="Wide")
+        +radix-icons-width("h-5 w-5")
+
+block scripts
+  script(type="module" src="/src/ts/app.ts" defer)

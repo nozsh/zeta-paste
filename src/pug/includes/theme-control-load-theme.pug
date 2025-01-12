@@ -1,0 +1,20 @@
+//-
+  # 6 Lines = 5 Comments
+  - Get saved theme from localStorage
+  - If user prefers light theme, so systemTheme = light, else dark
+    - Also, if "prefers-color..."" don't work, systemTheme will be dark
+  - if theme saved - use it, if not, use systemTheme
+  - Set theme in html tag
+    - Formally, dup from TS, needed to remove "flickering" on load
+  - Save theme if theme not been saved before
+    - That is, save theme on first time load
+
+script.
+  (function() {
+    const savedTheme = localStorage.getItem('theme');
+    const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    const theme = savedTheme || systemTheme;
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.classList.add(theme)
+    if (!savedTheme) localStorage.setItem('theme', theme);
+  })();

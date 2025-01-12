@@ -1,0 +1,345 @@
+extends ../../../main.pug
+
+block meta
+  +meta({
+    robots: "index, follow",
+    title: "О – Zeta Paste",
+    desc: "Open-source веб-приложение для шифрования текста со сквозным (E2E) шифрованием.",
+    keywords: "шифрование текста,end-to-end шифрование,E2E шифрование,оффлайн шифрование,безопасность данных,защита сообщений",
+    canonical: "https://zeta.su/paste/about/ru/",
+    hreflang: "https://zeta.su/paste/about/",
+    hreflang_ru: "https://zeta.su/paste/about/ru/",
+    image: "https://zeta.su/paste/assets/webpage-preview.jpg",
+    image_alt: "Logo and name of Zeta Paste.",
+  })
+
+block content
+  div.flex.justify-center.mb-5
+    .container.flex.flex-col.m-4.p-4.max-w-3xl(class="justify-center md:transition-all")
+      div.mb-4.flex.justify-end
+        a.inline-flex.justify-center.items-center.gap-2.bg-base-300.py-2.px-2.rounded-md.cursor-pointer.font-medium.select-none(id="lang-en")
+          +fontisto-language("h-5 w-5")
+          | English
+
+      .prose.max-w-full
+        h1 Все, что нужно знать
+        h2 Оглавление
+        ul
+          li
+            a.link(href="#about-app") О приложении Zeta Paste
+          li
+            a.link(href="#about-buttons") Кнопки
+          li
+            a.link(href="#how-to-use") Как использовать
+            ul
+              li
+                a.link(href="#encryption") Шифрование
+              li
+                a.link(href="#decryption") Дешифрование
+          li
+            a.link(href="#about-iterations") Итерации
+          li
+            a.link(href="#how-it-works") Как это работает
+          li
+            a.link(href="#example") Пример
+          li
+            a.link(href="#about-resources") Ресурсы
+            ul
+              li
+                a.link(href="#icons") Наборы, из которых взяты иконки
+
+
+        h2#about-app О приложении Zeta Paste
+
+        p Это приложение с открытым исходных кодом создано для шифрования текста (или «секретных сообщений»). Оно шифрует текст с использованием сквозного шифрования (E2E), чтобы только вы или человек, которому вы доверяете и который знает пароль, могли его прочитать.
+
+        p Шифрование и дешифрование происходят на вашем устройстве. Приложение работает полностью на стороне клиента и может использоваться офлайн. Ваши данные никуда не передаются и нигде не хранятся.
+
+        p После шифрования вы получаете три самодостаточных части:
+        
+        ul
+          li Соль (SALT)
+          li IV (Initialization Vector — Вектор инициализации)
+          li Зашифрованные данные (DATA)
+          
+        p Эти части необходимы для расшифровки, они не хранятся в приложении или на серверах. Для успешной расшифровки потребуются эти данные, пароль и количество итераций которые использовались при шифровании.
+
+
+        h2#about-buttons Кнопки
+        .overflow-x-auto
+          table.table
+            thead
+              tr.bg-base-200
+                th Как выглядит
+                th Описание
+            tbody
+              tr
+                td
+                  +about-element-with-icon
+                    +solar-text-bold("h-4 w-4")
+                    | &nbsp;Edit
+                td Режим редактирования
+              tr
+                td
+                  +about-element-with-icon
+                    +ri-markdown-fill("h-4 w-4")
+                    | &nbsp;Markdown
+                td Превью в markdown
+              tr
+                td
+                  +about-element-with-icon
+                    +material-symbols-password-rounded("h-4 w-4")
+                td Ввести пароль &amp; итерации
+              tr
+                td
+                  +about-element-with-icon
+                    +hugeicons-encrypt("h-4 w-4")
+                td Зашифровать. Нажмите чтобы зашифровать
+              tr
+                td
+                  +about-element-with-icon
+                    +mdi-encryption-reset("h-4 w-4")
+                td Расшифровать. Нажмите чтобы расшифровать
+              tr
+                td
+                  +about-element-with-icon
+                    +fluent-scan-text-28-filled("h-4 w-4")
+                td Мануальный ввод данных: SALT, IV, DATA
+              tr
+                td
+                  +about-element-with-icon
+                    +ic-round-qrcode("h-4 w-4")
+                td Получить QR-код
+              tr(class="hidden md:table-row")
+                td
+                  +about-element-with-icon
+                    +radix-icons-width("h-4 w-4")
+                td Поменять ширину редактирования/превью
+                  
+
+        h2#how-to-use Как использовать
+        h3#encryption Шифрование
+        ol
+          li Нажмите&nbsp;
+            +about-element-with-icon
+              +solar-text-bold("h-4 w-4")
+              | &nbsp;Edit
+          
+          li Напишите какое-нибудь сообщение
+          
+          li Нажмите&nbsp;
+            +about-element-with-icon
+              +material-symbols-password-rounded("h-4 w-4")
+            | &nbsp;, придумайте пароль, и если нужно измените кол-во итераций
+
+          li Поделитесь этим по частям или просто поделитесь ссылкой
+
+        h3#decryption Дешифрование
+        p Соберите ссылку по частям, или просто перейдите по ссылки (или QR-Code) и убедитесь что в адресной строке у вас ссылка вида&nbsp;
+          span.text-nowrap
+            code # + &lt;SALT&gt; : &lt;IV&gt; : &lt;DATA&gt;
+          | &nbsp;.
+
+        p Или используйте&nbsp;
+          +about-element-with-icon
+            +fluent-scan-text-28-filled("h-4 w-4")
+          | &nbsp;, чтобы ввести данные вручную.
+
+        ol
+          li Нажмите&nbsp;
+            +about-element-with-icon
+              +material-symbols-password-rounded("h-4 w-4")
+            | &nbsp;, введите пароль и кол-во итераций используемых при шифровании
+          
+          li Нажмите&nbsp;
+            +about-element-with-icon
+              +mdi-encryption-reset("h-4 w-4")
+            | &nbsp;, чтобы расшифровать сообщение
+
+
+        h2#about-iterations Итерации
+        p Чем больше итераций, тем больше нагрузка, больше времени нужно чтобы&nbsp;
+          span.text-nowrap зашифровать/расшифровать,
+          | &nbsp;тем сильнее шифрование.
+
+        p Количество итераций масштабируется:
+
+        ul
+          li 100000 = 1
+          li 150000 = 1.5/1,5
+          li 300000 = 3
+          li 340000 = 3.4/3,4
+          li 600000 = 6
+          li 1000000 = 10
+
+        p Количество итераций не может быть меньше 1.
+
+        h2#how-it-works Как это работает
+        p Текст сжимается и преобразуется в WordArray (массив 32-битных слов):
+
+        pre
+          code.
+            const compressedMessage = LZString.compressToUint8Array(message);
+            const messageWordArray = CryptoJS.lib.WordArray.create(compressedMessage);
+        
+        p Создается ключ с помощью алгоритма&nbsp;
+          a.link(href="https://ru.wikipedia.org/wiki/PBKDF2") PBKDF2
+          | &nbsp;на основе случайно сгенерированной соли, введенного пароля и кол-ва итераций:
+
+        pre
+          code.
+            const generateKey = (password: string, salt: string, iterations: number): CryptoJS.lib.WordArray =&gt; {
+              return CryptoJS.PBKDF2(password, salt, {
+                keySize: 256 / 32,
+                iterations: iterations,
+              });
+            };
+
+        pre
+          code.
+            const salt = CryptoJS.lib.WordArray.random(128 / 8).toString();
+            const key = generateKey(password, salt, iterations);
+
+        p С помощью созданного ключа алгоритмом&nbsp;
+          a.link(href="https://ru.wikipedia.org/wiki/PBKDF2") PBKDF2
+          | &nbsp;и случайно сгенерированным IV (Initialization Vector - Вектор инициализации) текст шифруется алгоритмом шифрования&nbsp;
+          a.link(href="https://ru.wikipedia.org/wiki/AES_(%D1%81%D1%82%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%D1%82_%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F") AES
+          | -256 в режиме&nbsp;
+          a.link(href="https://ru.wikipedia.org/wiki/%D0%A0%D0%B5%D0%B6%D0%B8%D0%BC_%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F#Cipher_Block_Chaining_(CBC)") CBC
+          | &nbsp;(Cipher Block Chaining) с заполнением&nbsp;
+          a.link(href="https://ru.wikipedia.org/wiki/PKCS") PKCS7
+          | :&nbsp;
+
+        pre
+          code.
+            const iv = CryptoJS.lib.WordArray.random(128 / 8);
+            const encrypted = CryptoJS.AES.encrypt(messageWordArray, key, {
+              iv: iv,
+              mode: CryptoJS.mode.CBC,
+              padding: CryptoJS.pad.Pkcs7,
+            });
+
+        p Вектор инициализации (IV) необходим для обеспечения уникальности шифрования даже при повторном использовании одного и того же ключа.
+
+        p На выходе получается объединенная строка в формате&nbsp;
+          code.text-nowrap # + &lt;SALT&gt; : &lt;IV&gt; : &lt;DATA&gt;
+          | :
+
+        pre
+          code return salt + ":" + iv.toString() + ":" + encrypted.toString();
+
+        p Расшифровка происходит также, только в обратном порядке.
+
+        p Все эти данные (
+          span.font-semibold SALT
+          | &nbsp;&amp;&nbsp;
+          span.font-semibold IV
+          | ) нужны для расшифровки&nbsp;
+          span.font-semibold DATA
+          | .
+
+
+        h2#example Пример
+
+        ul
+          li Итераций:&nbsp;
+            code 6
+          li Пароль:&nbsp;
+            code qwerty
+
+        hr
+
+        p
+          a.link(href="https://zeta.su/paste/#05f2cc85783d31c30d27fbdd3482eefe:5879f308fdda0f58bc2a2dc25e8f5a14:TyoQu72aMK1oXboMPA64IhjDXWkFo/tnywQZY6OWGQ99fcSSR3VrHnOrC35UNIvyajLkumEnDYuCYdn79vq0Wtf9J/tHhUZYDqf6+AFhLjGlWYv3P0Pyv6tC6reVuDBQ9gjz+1JWMi+GeRz6JFmoB65eA+f8+EO3MCQ2ko8KH5pvvDvgwZBbje8zHxXiFNchlB0dIdljxdY12yoCia1b6xX+KV/ihoEmXtRmhHptiBpyJDfbwzABxv0dxT4+OI+N0JCQmDSQF1iMpsmHUHzYCSVlVP4JRp8PzaHRkI+iJWIsXOD+FOoCJmCHOqwBBZ/jYLq277S0g8hr/TsBrVxcbpdnA4b6RluF+RdgUSfMYOhWeH5twwkceg6FfSNF2F+1b7GyzGDq5lxgMXewiaoOpGhaLgkNllKAQbG8rS31j7nknhM2dyURu3QCmTvwGnaTPMgVEHFO0pqoKxOKojwo4dR4Q4jsK6sxcHa50U/bPNi3LGd0H/hY4SKt1wLsTUiYuM2g/zRdAtg4GekJo0EhF3zWmITDNUjiqHYK+wiX5fRCIrlnnEvbMZjRziUDRX26nrQPs6fYMVAF5YgQVGzLlIs0uKO3EC0WyPqtNAVxuFBfLdygKeXnoCr2U7CwOMf0B7OY4I6NSpC5++YITcsZzQ==") Ссылка
+
+        hr
+
+        p SALT, IV, DATA
+
+        pre
+          code.
+            SALT: 05f2cc85783d31c30d27fbdd3482eefe
+            IV: 5879f308fdda0f58bc2a2dc25e8f5a14
+            DATA: TyoQu72aMK1oXboMPA64IhjDXWkFo/tnywQZY6OWGQ99fcSSR3VrHnOrC35UNIvyajLkumEnDYuCYdn79vq0Wtf9J/tHhUZYDqf6+AFhLjGlWYv3P0Pyv6tC6reVuDBQ9gjz+1JWMi+GeRz6JFmoB65eA+f8+EO3MCQ2ko8KH5pvvDvgwZBbje8zHxXiFNchlB0dIdljxdY12yoCia1b6xX+KV/ihoEmXtRmhHptiBpyJDfbwzABxv0dxT4+OI+N0JCQmDSQF1iMpsmHUHzYCSVlVP4JRp8PzaHRkI+iJWIsXOD+FOoCJmCHOqwBBZ/jYLq277S0g8hr/TsBrVxcbpdnA4b6RluF+RdgUSfMYOhWeH5twwkceg6FfSNF2F+1b7GyzGDq5lxgMXewiaoOpGhaLgkNllKAQbG8rS31j7nknhM2dyURu3QCmTvwGnaTPMgVEHFO0pqoKxOKojwo4dR4Q4jsK6sxcHa50U/bPNi3LGd0H/hY4SKt1wLsTUiYuM2g/zRdAtg4GekJo0EhF3zWmITDNUjiqHYK+wiX5fRCIrlnnEvbMZjRziUDRX26nrQPs6fYMVAF5YgQVGzLlIs0uKO3EC0WyPqtNAVxuFBfLdygKeXnoCr2U7CwOMf0B7OY4I6NSpC5++YITcsZzQ==
+        
+        hr
+
+        p Соль (SALT):
+        pre
+          code 05f2cc85783d31c30d27fbdd3482eefe
+
+        p IV:
+        pre
+          code 5879f308fdda0f58bc2a2dc25e8f5a14
+
+        p Зашифрованные данные (DATA):
+        pre
+          code TyoQu72aMK1oXboMPA64IhjDXWkFo/tnywQZY6OWGQ99fcSSR3VrHnOrC35UNIvyajLkumEnDYuCYdn79vq0Wtf9J/tHhUZYDqf6+AFhLjGlWYv3P0Pyv6tC6reVuDBQ9gjz+1JWMi+GeRz6JFmoB65eA+f8+EO3MCQ2ko8KH5pvvDvgwZBbje8zHxXiFNchlB0dIdljxdY12yoCia1b6xX+KV/ihoEmXtRmhHptiBpyJDfbwzABxv0dxT4+OI+N0JCQmDSQF1iMpsmHUHzYCSVlVP4JRp8PzaHRkI+iJWIsXOD+FOoCJmCHOqwBBZ/jYLq277S0g8hr/TsBrVxcbpdnA4b6RluF+RdgUSfMYOhWeH5twwkceg6FfSNF2F+1b7GyzGDq5lxgMXewiaoOpGhaLgkNllKAQbG8rS31j7nknhM2dyURu3QCmTvwGnaTPMgVEHFO0pqoKxOKojwo4dR4Q4jsK6sxcHa50U/bPNi3LGd0H/hY4SKt1wLsTUiYuM2g/zRdAtg4GekJo0EhF3zWmITDNUjiqHYK+wiX5fRCIrlnnEvbMZjRziUDRX26nrQPs6fYMVAF5YgQVGzLlIs0uKO3EC0WyPqtNAVxuFBfLdygKeXnoCr2U7CwOMf0B7OY4I6NSpC5++YITcsZzQ==
+
+        h2#about-resources Ресурсы (активы)
+        h3#icons Наборы, из которых взяты иконки
+
+        ul
+          li
+            a.link(href="https://github.com/carbon-design-system/carbon/tree/main/packages/icons") Carbon
+            | &nbsp;(Apache-2.0)
+          li
+            a.link(href="https://github.com/microsoft/fluentui-system-icons") Fluent
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://github.com/kenangundogan/fontisto") Fontisto
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://icon-sets.iconify.design/hugeicons/") Huge Icons
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://github.com/Templarian/MaterialDesign") Material Design
+            | &nbsp;(mdi) (Apache-2.0)
+          li
+            a.link(href="https://github.com/google/material-design-icons") Material Symbols
+            | &nbsp;(Apache-2.0)
+          li
+            a.link(href="https://github.com/material-icons/material-icons") Material Icons 
+            | &nbsp;(ic) (Apache-2.0)
+          li
+            a.link(href="https://github.com/primer/octicons/") Octicons
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://github.com/phosphor-icons/core") Phosphor
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://github.com/radix-ui/icons") Radix
+            | &nbsp;(MIT)
+          li
+            a.link(href="https://github.com/Remix-Design/RemixIcon") Remix
+            | &nbsp;(Apache-2.0)
+          li
+            a.link(href="https://www.figma.com/community/file/1166831539721848736/solar-icons-set") Solar
+            | &nbsp;(CC BY 4.0)
+          li
+            a.link(href="https://github.com/tabler/tabler-icons") Tabler
+            | &nbsp;(MIT)
+
+        hr
+
+        blockquote.font-bold 
+          span Приложение работает на клиенте.
+          br
+          span Ничего не хранится в базе данных.
+          br
+          span Базы данных не существует.
+
+  +bottom-bar("bg-transparent backdrop-blur-md")
+    li
+      a.tooltip(data-tip="Главная" onclick="window.location.href='../../'" aria-label="Главная")
+        +tabler-home-filled("h-5 w-5")
+    li
+      button.tooltip(type="button" data-tip="Наверх" id="go_to_top" aria-label="Наверх")
+        +solar-arrow-to-top-right-bold("h-5 w-5")
+
+  script(src="/src/ts/about-page-lang-change.ts" async)
+  script(src="/src/ts/handle-anchor-scroll.ts" defer)
+  script(src="/src/ts/go-to-top.ts" defer)
+
+  script.
+    document.getElementById("about").href = "#";

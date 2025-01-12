@@ -1,0 +1,25 @@
+style.
+  body {
+    background: #1c232b;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, 'segoe ui', Roboto, Oxygen, Ubuntu, Cantarell, 'open sans', 'helvetica neue', ui-sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol', 'noto color emoji', sans-serif;
+  }
+
+  body.loaded {
+    background: inherit;
+    opacity: 1;
+  }
+
+  .prose :where(pre code):not(:where([class~="not-prose"], [class~="not-prose"] *)),
+  .prose :where(kbd):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  }
+
+  code, kbd, pre, samp {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  }
+
+  .font-jb-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  }

@@ -1,0 +1,11 @@
+{
+  "plugins": {
+    "tailwindcss": {},
+    "cssnano": {
+      "enabled": true,
+      "options": {
+        "preset": "production"
+      }
+    }
+  }
+}

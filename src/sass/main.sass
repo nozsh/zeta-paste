@@ -1,0 +1,28 @@
+@use '_tailwind'
+
+.light .logo-light
+  display: none
+
+.dark .logo-dark
+  display: none
+
+.dark .prose
+  --tw-prose-kbd-shadows: 215 231 216
+  --tw-prose-kbd: #EEE7D8
+
+.prose img
+  border-radius: 0.5rem
+
+.link
+  --link-accent-light: #fb2d8d
+  --link-accent-dark: #00cdb7
+
+.light .link:hover
+  color: var(--link-accent-light)
+
+.dark .link:hover
+  color: var(--link-accent-dark)
+
+.link
+  text-decoration: none
+  box-shadow: 0 1px

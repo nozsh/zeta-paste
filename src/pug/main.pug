@@ -1,0 +1,33 @@
+include mixins/icons.pug
+include mixins/meta.pug
+include mixins/modal.pug
+include mixins/bottom-bar.pug
+include mixins/about-element-with-icon.pug
+
+doctype html
+html(lang="en" data-theme="")
+  head
+    //- link(rel="preconnect" href="https://fonts.googleapis.com")
+    //- link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+
+    block meta
+
+    <link rel="preload" as="style" onload="this.rel='stylesheet'" type="text/css" href="/src/sass/main.sass">
+    include includes/theme-control-load-theme.pug
+    include includes/head-styles.pug
+  body
+    include includes/navbar.pug
+    block content
+
+    include includes/footer.pug
+
+    script(type="module" src="/src/ts/main.ts" defer)
+    block scripts
+
+    include includes/footer-extended.pug
+    
+    script(data-goatcounter="https://lumpish-hybrid-paste.goatcounter.com/count" src="//gc.zgo.at/count.js" async)
+
+    include includes/idk.pug
+
+  block vars

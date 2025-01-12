@@ -1,0 +1,10 @@
+div.pointer-events-none.fixed.bottom-1(class="left-1/2 transform -translate-x-1/2 sm:left-5 sm:translate-x-0")
+  div.text-base-content.opacity-25.text-sm
+    span v1.0.0
+    span &nbsp;|&nbsp;
+    span Zeta
+    span &nbsp;&copy;&nbsp;
+    span#footer-year
+
+script.
+  document.getElementById("footer-year").textContent = new Date().getFullYear();

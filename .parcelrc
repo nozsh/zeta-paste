@@ -1,0 +1,28 @@
+{
+  "extends": "@parcel/config-default",
+  "namers": [
+    "parcel-namer-rewrite"
+  ],
+  "resolvers": [
+    "parcel-resolver-ignore",
+    "..."
+  ],
+  "reporters": [
+    "...",
+    "parcel-reporter-static-files-copy"
+  ],
+  "transformers": {
+    "*.sass": [
+      "@parcel/transformer-sass"
+    ],
+    "*.ts": [
+      "@parcel/transformer-typescript-tsc"
+    ],
+    "*.pug": [
+      "@parcel/transformer-pug"
+    ],
+    "*.webmanifest": [
+      "@parcel/transformer-webmanifest"
+    ]
+  }
+}

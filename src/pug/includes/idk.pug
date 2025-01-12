@@ -1,0 +1,8 @@
+input(type="checkbox" id="idk_modal" class="modal-toggle")
+.modal(class="" role="dialog" aria-label="idk_modal")
+  .modal-box(class="select-none bg-transparent backdrop-blur-md w-full h-full max-w-full max-h-full")
+    .flex.justify-center.items-center.h-full
+      img.shadow-md(src="/paste/assets/logo-dark.svg" id="idk_img" class="w-56 h-56" alt="just another logo")
+  label.modal-backdrop(for="idk_modal" class="sr-only pointer-events-none select-none") Close
+
+script(src="/src/ts/idk.ts" defer)
