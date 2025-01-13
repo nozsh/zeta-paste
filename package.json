@@ -1,6 +1,6 @@
 {
   "name": "zeta-paste",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Serverless E2E encrypted paste sharing web app.",
   "scripts": {
     "clean": "rm -rf .parcel-cache && rm -rf public && npm cache clean --force",
@@ -64,9 +64,9 @@
   },
   "parcel-namer-rewrite": {
     "rules": {
-      "(.*).css": "dev_$1.{hash}.css",
-      "(.*).js": "dev_$1.{hash}.js"
+      "(.*).css": "{hash}.css",
+      "(.*).js": "{hash}.js"
     },
-    "silent": true
+    "silent": false
   }
 }
