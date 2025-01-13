@@ -5,7 +5,7 @@ module.exports = {
   swDest: "public/service-worker.js", // Where Service Worker be saved
   runtimeCaching: [
     {
-      urlPattern: /\/paste\/beta\//, // Pattern for caching
+      urlPattern: /\/paste\//, // Pattern for caching
       handler: "StaleWhileRevalidate", // Caching strategy
       // handler: "NetworkFirst", // Caching strategy
       // handler: "CacheFirst", // Caching strategy
