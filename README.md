@@ -1,4 +1,4 @@
-<img src="assets/logo-dark.svg" width="100" heigh="100" alt="Zeta Paste Logo Dark">
+<img src="assets/logo-light.svg" width="100" heigh="100" alt="Zeta Paste Logo Dark">
 
 # Zeta Paste
 
